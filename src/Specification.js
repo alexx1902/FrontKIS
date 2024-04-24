@@ -54,12 +54,22 @@ export class Specification extends Component {
     }
 
     changePositionIDFilter = (e)=>{
-        this.state.PositionIDFilter=e.target.value;
-        this.FilterFn();
+        this.setState({PositionIDFilter: e.target.value}, () => this.FilterFn());
     }
     changeDescriptionFilter = (e)=>{
-        this.state.DescriptionFilter=e.target.value;
-        this.FilterFn();
+        this.setState({DescriptionFilter: e.target.value}, () => this.FilterFn());
+    }
+    changeParentID = (e)=>{
+        this.setState({ParentID: e.target.value});
+    }
+    changeDescription = (e)=>{
+        this.setState({Description: e.target.value});
+    }
+    changeQuantityPerParent = (e)=>{
+        this.setState({QuantityPerParent: e.target.value});
+    }
+    changeUnitMeasurement = (e)=>{
+        this.setState({UnitMeasurement: e.target.value});
     }
 
     refreshList(){
@@ -74,10 +84,6 @@ export class Specification extends Component {
         this.refreshList();
     }
     
-    changeDescription = (e)=>{
-        this.setState({Description:e.target.value});
-    }
-
     addClick(){
         this.setState({
             modalTitle:"Add Specification",
@@ -171,7 +177,10 @@ export class Specification extends Component {
             specifications,
             modalTitle,
             PositionID,
-            Description
+            Description,
+            ParentID,
+            QuantityPerParent,
+            UnitMeasurement
         }=this.state;
 
         return(
@@ -186,34 +195,34 @@ export class Specification extends Component {
                 <table className="table table-striped">
                     <thead>
                         <tr>
-                            <th>
-                                PositionID
-                            </th>
-                            <th>
-                                Description
-                            </th>
-                            <th>
-                            Options
-                            </th>
+                            <th>PositionID</th>
+                            <th>Description</th>
+                            <th>ParentID</th>
+                            <th>QuantityPerParent</th>
+                            <th>UnitMeasurement</th>
+                            <th>Options</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {specifications.map(spec=>
+                        {specifications.map(spec =>
                             <tr key={spec.PositionID}>
                                 <td>{spec.PositionID}</td>
                                 <td>{spec.Description}</td>
+                                <td>{spec.ParentID}</td>
+                                <td>{spec.QuantityPerParent}</td>
+                                <td>{spec.UnitMeasurement}</td>
                                 <td>
                                     <button type="button"
                                         className="btn btn-light mr-1"
                                         data-bs-toggle="modal"
                                         data-bs-target="#exampleModal"
-                                        onClick={()=>this.editClick(spec)}>
+                                        onClick={() => this.editClick(spec)}>
                                         Edit
                                     </button>
 
                                     <button type="button"
                                         className="btn btn-light mr-1"
-                                        onClick={()=>this.deleteClick(spec.PositionID)}>
+                                        onClick={() => this.deleteClick(spec.PositionID)}>
                                         Delete
                                     </button>
                                 </td>
@@ -222,37 +231,57 @@ export class Specification extends Component {
                     </tbody>
                 </table>
 
-                <div className="modal fade" id="exampleModal" tabIndex="-1" aria-hidden="true">
-                    <div className="modal-dialog modal-lg modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title">{modalTitle}</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="input-group mb-3">
-                                    <span className="input-group-text">Description</span>
-                                    <input type="text" className="form-control"
-                                        value={Description}
-                                        onChange={this.changeDescription}/>
+                <div className="modal fade" id="exampleModal"
+                                    tabIndex="-1"
+                                    aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h5 className="modal-title">{modalTitle}</h5>
+                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <div className="input-group mb-3">
+                                                    <span className="input-group-text">Description</span>
+                                                    <input type="text" className="form-control"
+                                                        value={Description}
+                                                        onChange={this.changeDescription}/>
+                                                </div>
+                
+                                                <div className="input-group mb-3">
+                                                    <span className="input-group-text">ParentID</span>
+                                                    <input type="text" className="form-control"
+                                                        value={ParentID}
+                                                        onChange={this.changeParentID}/>
+                                                </div>
+                
+                                                <div className="input-group mb-3">
+                                                    <span className="input-group-text">QuantityPerParent</span>
+                                                    <input type="number" className="form-control"
+                                                        value={QuantityPerParent}
+                                                        onChange={this.changeQuantityPerParent}/>
+                                                </div>
+                
+                                                <div className="input-group mb-3">
+                                                    <span className="input-group-text">UnitMeasurement</span>
+                                                    <input type="text" className="form-control"
+                                                        value={UnitMeasurement}
+                                                        onChange={this.changeUnitMeasurement}/>
+                                                </div>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal"
+                                                    onClick={PositionID===0?this.createClick:this.updateClick}>
+                                                    {PositionID===0?'Create':'Update'}
+                                                </button>
+                                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                {PositionID===0 ?
-                                    <button type="button"
-                                        className="btn btn-primary float-start"
-                                        onClick={()=>this.createClick()}
-                                    >Create</button>
-                                    : null}
-                                {PositionID!==0 ?
-                                    <button type="button"
-                                        className="btn btn-primary float-start"
-                                        onClick={()=>this.updateClick()}
-                                    >Update</button>
-                                    : null}
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-}
+                        )
+                    }
+                }
+                
