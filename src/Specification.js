@@ -73,7 +73,7 @@ export class Specification extends Component {
     }
 
     refreshList(){
-        fetch(variables.API_URL+'specification')
+        fetch(variables.API_URL+'Specification')
         .then(response=>response.json())
         .then(data=>{
             this.setState({specifications:data,specificationsWithoutFilter:data});
@@ -107,7 +107,7 @@ export class Specification extends Component {
     }
 
     createClick(){
-        fetch(variables.API_URL+'specification',{
+        fetch(variables.API_URL+'Specification',{
             method:'POST',
             headers:{
                 'Accept':'application/json',
@@ -130,7 +130,7 @@ export class Specification extends Component {
     }
 
     updateClick(){
-        fetch(variables.API_URL+'specification',{
+        fetch(variables.API_URL+'Specification',{
             method:'PUT',
             headers:{
                 'Accept':'application/json',
@@ -155,7 +155,7 @@ export class Specification extends Component {
 
     deleteClick(id){
         if(window.confirm('Are you sure?')){
-            fetch(variables.API_URL+'specification/'+id,{
+            fetch(variables.API_URL+'Specification/'+id,{
                 method:'DELETE',
                 headers:{
                     'Accept':'application/json',
@@ -219,7 +219,7 @@ export class Specification extends Component {
                                         onClick={() => this.editClick(spec)}>
                                         Edit
                                     </button>
-
+            
                                     <button type="button"
                                         className="btn btn-light mr-1"
                                         onClick={() => this.deleteClick(spec.PositionID)}>
@@ -230,58 +230,57 @@ export class Specification extends Component {
                         )}
                     </tbody>
                 </table>
-
+                
                 <div className="modal fade" id="exampleModal"
-                                    tabIndex="-1"
-                                    aria-labelledby="exampleModalLabel"
-                                    aria-hidden="true">
-                                    <div className="modal-dialog">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h5 className="modal-title">{modalTitle}</h5>
-                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div className="modal-body">
-                                                <div className="input-group mb-3">
-                                                    <span className="input-group-text">Description</span>
-                                                    <input type="text" className="form-control"
-                                                        value={Description}
-                                                        onChange={this.changeDescription}/>
-                                                </div>
-                
-                                                <div className="input-group mb-3">
-                                                    <span className="input-group-text">ParentID</span>
-                                                    <input type="text" className="form-control"
-                                                        value={ParentID}
-                                                        onChange={this.changeParentID}/>
-                                                </div>
-                
-                                                <div className="input-group mb-3">
-                                                    <span className="input-group-text">QuantityPerParent</span>
-                                                    <input type="number" className="form-control"
-                                                        value={QuantityPerParent}
-                                                        onChange={this.changeQuantityPerParent}/>
-                                                </div>
-                
-                                                <div className="input-group mb-3">
-                                                    <span className="input-group-text">UnitMeasurement</span>
-                                                    <input type="text" className="form-control"
-                                                        value={UnitMeasurement}
-                                                        onChange={this.changeUnitMeasurement}/>
-                                                </div>
-                                            </div>
-                                            <div className="modal-footer">
-                                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal"
-                                                    onClick={PositionID===0?this.createClick:this.updateClick}>
-                                                    {PositionID===0?'Create':'Update'}
-                                                </button>
-                                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                    tabIndex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">{modalTitle}</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="input-group mb-3">
+                                    <span className="input-group-text">Description</span>
+                                    <input type="text" className="form-control"
+                                        value={Description}
+                                        onChange={this.changeDescription}/>
+                                </div>
+        
+                                <div className="input-group mb-3">
+                                    <span className="input-group-text">ParentID</span>
+                                    <input type="text" className="form-control"
+                                        value={ParentID}
+                                        onChange={this.changeParentID}/>
+                                </div>
+        
+                                <div className="input-group mb-3">
+                                    <span className="input-group-text">QuantityPerParent</span>
+                                    <input type="number" className="form-control"
+                                        value={QuantityPerParent}
+                                        onChange={this.changeQuantityPerParent}/>
+                                </div>
+        
+                                <div className="input-group mb-3">
+                                    <span className="input-group-text">UnitMeasurement</span>
+                                    <input type="text" className="form-control"
+                                        value={UnitMeasurement}
+                                        onChange={this.changeUnitMeasurement}/>
                                 </div>
                             </div>
-                        )
-                    }
-                }
-                
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal"
+                                    onClick={PositionID===0 ? this.createClick : this.updateClick}>
+                                    {PositionID===0 ? 'Create' : 'Update'}
+                                </button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
