@@ -9,29 +9,29 @@ export class Specification extends Component {
         this.state={
             specifications:[],
             modalTitle:"",
-            PositionID:0,
-            ParentID:"",
-            Description:"",
-            QuantityPerParent:0,
-            UnitMeasurement:"",
+            positionID:0,
+            parentID:"",
+            description:"",
+            quantityPerParent:0,
+            unitMeasurement:"",
 
-            PositionIDFilter:"",
-            DescriptionFilter:"",
+            positionIDFilter:"",
+            descriptionFilter:"",
             specificationsWithoutFilter:[]
         }
     }
 
     FilterFn(){
-        var PositionIDFilter=this.state.PositionIDFilter;
-        var DescriptionFilter = this.state.DescriptionFilter;
+        var positionIDFilter=this.state.positionIDFilter;
+        var descriptionFilter = this.state.descriptionFilter;
 
         var filteredData=this.state.specificationsWithoutFilter.filter(
             function(el){
-                return el.PositionID.toString().toLowerCase().includes(
-                    PositionIDFilter.toString().trim().toLowerCase()
+                return el.positionID.toString().toLowerCase().includes(
+                    positionIDFilter.toString().trim().toLowerCase()
                 ) &&
-                el.Description.toString().toLowerCase().includes(
-                    DescriptionFilter.toString().trim().toLowerCase()
+                el.description.toString().toLowerCase().includes(
+                    descriptionFilter.toString().trim().toLowerCase()
                 )
             }
         );
@@ -53,23 +53,23 @@ export class Specification extends Component {
         this.setState({specifications:sortedData});
     }
 
-    changePositionIDFilter = (e)=>{
-        this.setState({PositionIDFilter: e.target.value}, () => this.FilterFn());
+    changepositionIDFilter = (e)=>{
+        this.setState({positionIDFilter: e.target.value}, () => this.FilterFn());
     }
-    changeDescriptionFilter = (e)=>{
-        this.setState({DescriptionFilter: e.target.value}, () => this.FilterFn());
+    changedescriptionFilter = (e)=>{
+        this.setState({descriptionFilter: e.target.value}, () => this.FilterFn());
     }
-    changeParentID = (e)=>{
-        this.setState({ParentID: e.target.value});
+    changeparentID = (e)=>{
+        this.setState({parentID: e.target.value});
     }
-    changeDescription = (e)=>{
-        this.setState({Description: e.target.value});
+    changedescription = (e)=>{
+        this.setState({description: e.target.value});
     }
-    changeQuantityPerParent = (e)=>{
-        this.setState({QuantityPerParent: e.target.value});
+    changequantityPerParent = (e)=>{
+        this.setState({quantityPerParent: e.target.value});
     }
-    changeUnitMeasurement = (e)=>{
-        this.setState({UnitMeasurement: e.target.value});
+    changeunitMeasurement = (e)=>{
+        this.setState({unitMeasurement: e.target.value});
     }
 
     refreshList(){
@@ -87,22 +87,22 @@ export class Specification extends Component {
     addClick(){
         this.setState({
             modalTitle:"Add Specification",
-            PositionID:0,
-            Description:"",
-            ParentID:"",
-            QuantityPerParent:0,
-            UnitMeasurement:""
+            positionID:0,
+            description:"",
+            parentID:"",
+            quantityPerParent:0,
+            unitMeasurement:""
         });
     }
 
     editClick(spec){
         this.setState({
             modalTitle:"Edit Specification",
-            PositionID:spec.PositionID,
-            Description:spec.Description,
-            ParentID:spec.ParentID,
-            QuantityPerParent:spec.QuantityPerParent,
-            UnitMeasurement:spec.UnitMeasurement
+            positionID:spec.positionID,
+            description:spec.description,
+            parentID:spec.parentID,
+            quantityPerParent:spec.quantityPerParent,
+            unitMeasurement:spec.unitMeasurement
         });
     }
 
@@ -114,10 +114,11 @@ export class Specification extends Component {
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                Description: this.state.Description,
-                ParentID: this.state.ParentID,
-                QuantityPerParent: this.state.QuantityPerParent,
-                UnitMeasurement: this.state.UnitMeasurement
+                positionID:this.state.positionID,
+                description: this.state.description,
+                parentID: this.state.parentID,
+                quantityPerParent: this.state.quantityPerParent,
+                unitMeasurement: this.state.unitMeasurement
             })
         })
         .then(res=>res.json())
@@ -137,11 +138,11 @@ export class Specification extends Component {
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({
-                PositionID: this.state.PositionID,
-                Description: this.state.Description,
-                ParentID: this.state.ParentID,
-                QuantityPerParent: this.state.QuantityPerParent,
-                UnitMeasurement: this.state.UnitMeasurement
+                positionID: this.state.positionID,
+                description: this.state.description,
+                parentID: this.state.parentID,
+                quantityPerParent: this.state.quantityPerParent,
+                unitMeasurement: this.state.unitMeasurement
             })
         })
         .then(res=>res.json())
@@ -176,11 +177,11 @@ export class Specification extends Component {
         const {
             specifications,
             modalTitle,
-            PositionID,
-            Description,
-            ParentID,
-            QuantityPerParent,
-            UnitMeasurement
+            positionID,
+            description,
+            parentID,
+            quantityPerParent,
+            unitMeasurement
         }=this.state;
 
         return(
@@ -192,25 +193,39 @@ export class Specification extends Component {
                     onClick={()=>this.addClick()}>
                     Add Specification
                 </button>
+                <div className="row">
+                    <div className="col-md-6">
+                        <input type="text" className="form-control m-2"
+                            placeholder="Filter by positionID"
+                            value={this.state.positionIDFilter}
+                            onChange={this.changepositionIDFilter}/> {/* Добавляем onChange и привязываем к changepositionIDFilter */}
+                    </div>
+                    <div className="col-md-6">
+                        <input type="text" className="form-control m-2"
+                            placeholder="Filter by description"
+                            value={this.state.descriptionFilter}
+                            onChange={this.changedescriptionFilter}/> {/* Добавляем onChange и привязываем к changedescriptionFilter */}
+                    </div>
+                </div>
                 <table className="table table-striped">
                     <thead>
                         <tr>
-                            <th>PositionID</th>
-                            <th>Description</th>
-                            <th>ParentID</th>
-                            <th>QuantityPerParent</th>
-                            <th>UnitMeasurement</th>
+                            <th>positionID</th>
+                            <th>description</th>
+                            <th>parentID</th>
+                            <th>quantityPerParent</th>
+                            <th>unitMeasurement</th>
                             <th>Options</th>
                         </tr>
                     </thead>
                     <tbody>
                         {specifications.map(spec =>
-                            <tr key={spec.PositionID}>
-                                <td>{spec.PositionID}</td>
-                                <td>{spec.Description}</td>
-                                <td>{spec.ParentID}</td>
-                                <td>{spec.QuantityPerParent}</td>
-                                <td>{spec.UnitMeasurement}</td>
+                            <tr key={spec.positionID}>
+                                <td>{spec.positionID}</td>
+                                <td>{spec.description}</td>
+                                <td>{spec.parentID}</td>
+                                <td>{spec.quantityPerParent}</td>
+                                <td>{spec.unitMeasurement}</td>
                                 <td>
                                     <button type="button"
                                         className="btn btn-light mr-1"
@@ -222,7 +237,7 @@ export class Specification extends Component {
             
                                     <button type="button"
                                         className="btn btn-light mr-1"
-                                        onClick={() => this.deleteClick(spec.PositionID)}>
+                                        onClick={() => this.deleteClick(spec.positionID)}>
                                         Delete
                                     </button>
                                 </td>
@@ -238,49 +253,49 @@ export class Specification extends Component {
                     <div className="modal-dialog">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">{modalTitle}</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                            <h5 className="modal-title" id="exampleModalLabel">{modalTitle}</h5>
+                                <button type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close">
+                                </button>
                             </div>
                             <div className="modal-body">
                                 <div className="input-group mb-3">
-                                    <span className="input-group-text">Description</span>
-                                    <input type="text" className="form-control"
-                                        value={Description}
-                                        onChange={this.changeDescription}/>
+                                    <span className="input-group-text">positionID</span>
+                                    <input type="text" className="form-control" value={positionID} onChange={this.changepositionID} />
                                 </div>
-        
                                 <div className="input-group mb-3">
-                                    <span className="input-group-text">ParentID</span>
-                                    <input type="text" className="form-control"
-                                        value={ParentID}
-                                        onChange={this.changeParentID}/>
+                                    <span className="input-group-text">description</span>
+                                    <input type="text" className="form-control" value={description} onChange={this.changedescription} />
                                 </div>
-        
                                 <div className="input-group mb-3">
-                                    <span className="input-group-text">QuantityPerParent</span>
-                                    <input type="number" className="form-control"
-                                        value={QuantityPerParent}
-                                        onChange={this.changeQuantityPerParent}/>
+                                    <span className="input-group-text">parentID</span>
+                                    <input type="text" className="form-control" value={parentID} onChange={this.changeparentID} />
                                 </div>
-        
                                 <div className="input-group mb-3">
-                                    <span className="input-group-text">UnitMeasurement</span>
-                                    <input type="text" className="form-control"
-                                        value={UnitMeasurement}
-                                        onChange={this.changeUnitMeasurement}/>
+                                    <span className="input-group-text">quantityPerParent</span>
+                                    <input type="text" className="form-control" value={quantityPerParent} onChange={this.changequantityPerParent} />
+                                </div>
+                                <div className="input-group mb-3">
+                                    <span className="input-group-text">unitMeasurement</span>
+                                    <input type="text" className="form-control" value={unitMeasurement} onChange={this.changeunitMeasurement} />
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal"
-                                    onClick={PositionID===0 ? this.createClick : this.updateClick}>
-                                    {PositionID===0 ? 'Create' : 'Update'}
-                                </button>
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                {positionID === 0 ?
+                                    <button type="button" className="btn btn-primary" onClick={() => this.createClick()}>Create</button>
+                                    : <button type="button" className="btn btn-primary" onClick={() => this.updateClick()}>Update</button>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }
+
+export default Specification;
